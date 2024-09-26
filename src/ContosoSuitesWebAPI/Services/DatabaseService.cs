@@ -39,6 +39,8 @@ public class DatabaseService : IDatabaseService
     [Description("Get all bookings for a single hotel.")]
     public async Task<IEnumerable<Booking>> GetBookingsForHotel(int hotelId)
     {
+        Console.Out.WriteLine("Getting data for hotel: " + hotelId);
+
         var sql = "SELECT BookingID, CustomerID, HotelID, StayBeginDate, StayEndDate, NumberOfGuests FROM dbo.Booking WHERE HotelID = @HotelID";
         using var conn = new SqlConnection(
             connectionString: Environment.GetEnvironmentVariable("SQLCONNSTR_ContosoSuites")!
@@ -66,9 +68,10 @@ public class DatabaseService : IDatabaseService
     }
 
     [KernelFunction]
-    [Description("Get bookings by hotel andminimum date.")]
+    [Description("Get bookings by hotel and minimum date.")]
     public async Task<IEnumerable<Booking>> GetBookingsByHotelAndMinimumDate(int hotelId, DateTime dt)
     {
+        Console.Out.WriteLine("Getting data for hotel: " + hotelId + " Date: " + dt);
         var sql = "SELECT BookingID, CustomerID, HotelID, StayBeginDate, StayEndDate, NumberOfGuests FROM dbo.Booking WHERE HotelID = @HotelID AND StayBeginDate >= @StayBeginDate";
         using var conn = new SqlConnection(
             connectionString: Environment.GetEnvironmentVariable("SQLCONNSTR_ContosoSuites")!
@@ -100,6 +103,7 @@ public class DatabaseService : IDatabaseService
     [Description("Get bookings with missing hotel rooms.")]
     public async Task<IEnumerable<Booking>> GetBookingsMissingHotelRooms()
     {
+        Console.Out.WriteLine("Getting Missing Bookings for all hotels");
         var sql = """
             SELECT
                 b.BookingID,
@@ -145,6 +149,7 @@ public class DatabaseService : IDatabaseService
     [Description("Get bookings with multiple booked rooms")]
     public async Task<IEnumerable<Booking>> GetBookingsWithMultipleHotelRooms()
     {
+        Console.Out.WriteLine("Getting Bookings with Muliple Rooms");
         var sql = """
             SELECT
                 b.BookingID,
